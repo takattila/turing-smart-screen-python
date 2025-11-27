@@ -71,6 +71,26 @@ If you haven't received your screen yet but want to start developing your theme 
 
 ## How to start
 
+### Run with docker
+
+#### Start container using docker compose
+
+```sh
+docker compose up -d
+```
+
+#### Run configuration script
+
+```sh
+docker exec -it tsr tsr configure
+```
+
+Then restart your container
+
+```sh
+docker compose restart
+```
+
 ### [> Follow instructions on the wiki to configure and start this project.](https://github.com/mathoudebine/turing-smart-screen-python/wiki)
 
 There are 2 possible uses of this project Python code:
