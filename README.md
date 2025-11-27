@@ -69,20 +69,29 @@ This project offers an abstraction layer to manage all of these products in a un
 
 If you haven't received your screen yet but want to start developing your theme now, you can use the [**"simulated LCD" mode!**](https://github.com/mathoudebine/turing-smart-screen-python/wiki/Simulated-display)
 
-## How to start
+## Run with docker
 
-### Run with docker
+### Prerequisites on Bazzite
 
-#### Start container using docker compose
+```sh
+sudo rpm-ostree install docker
+
+
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.29.7/docker-compose-$(uname -s)-$(uname -m)"   -o /usr/local/bin/docker-compose
+
+systemctl restart
+```
+
+### Start container using docker compose
 
 ```sh
 sudo docker-compose -f compose.yml up -d
 ```
 
-### Run configuration script
+### Enter docker container
 
 ```sh
-sudo docker exec -it tsr tsr configure
+sudo docker exec -it tsr /bin/sh
 ```
 
 Then restart your container
@@ -96,6 +105,8 @@ Remove your container
 ```sh
 sudo docker-compose down
 ```
+
+## How to start
 
 ### [> Follow instructions on the wiki to configure and start this project.](https://github.com/mathoudebine/turing-smart-screen-python/wiki)
 
