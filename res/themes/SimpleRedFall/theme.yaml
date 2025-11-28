@@ -43,7 +43,7 @@ static_text:
     Y: 406
     FONT: generale-mono/GeneraleMonoA.ttf
     FONT_SIZE: 12
-    FONT_COLOR: 255, 124, 107
+    FONT_COLOR: 255, 95, 0
     BACKGROUND_IMAGE: background.png
   RAM_TEXT:
     TEXT: "%  RAM"
@@ -75,7 +75,7 @@ static_text:
     Y: 287
     FONT: generale-mono/GeneraleMonoA.ttf
     FONT_SIZE: 12
-    FONT_COLOR: 255, 101, 80
+    FONT_COLOR: 255, 72, 0
     BACKGROUND_IMAGE: background.png
 STATS:
   CPU:
@@ -102,7 +102,7 @@ STATS:
         BAR_OUTLINE: True
         BACKGROUND_IMAGE: background.png
     TEMPERATURE:
-      INTERVAL: 5
+      INTERVAL: 1
       TEXT:
         SHOW: True
         SHOW_UNIT: False
@@ -120,11 +120,11 @@ STATS:
         HEIGHT: 50
         MIN_VALUE: 0
         MAX_VALUE: 100
-        BAR_COLOR: 255, 124, 107
+        BAR_COLOR: 255, 95, 0
         BAR_OUTLINE: True
         BACKGROUND_IMAGE: background.png
   MEMORY:
-    INTERVAL: 5
+    INTERVAL: 1
     VIRTUAL:
       PERCENT_TEXT:
         SHOW: True
@@ -166,6 +166,6 @@ STATS:
         HEIGHT: 50
         MIN_VALUE: 0
         MAX_VALUE: 100
-        BAR_COLOR: 255, 101, 80
+        BAR_COLOR: 255, 72, 0
         BAR_OUTLINE: True
         BACKGROUND_IMAGE: background.png

@@ -99,7 +99,7 @@ STATS:
         # BACKGROUND_COLOR: 0, 0, 0
         BACKGROUND_IMAGE: background.png
     TEMPERATURE:
-      INTERVAL: 5
+      INTERVAL: 1
       TEXT:
         SHOW: True
         SHOW_UNIT: True
@@ -121,7 +121,7 @@ STATS:
         BAR_OUTLINE: True
         BACKGROUND_IMAGE: background.png
     FREQUENCY:
-      INTERVAL: 5
+      INTERVAL: 1
       TEXT:
         SHOW: True
         SHOW_UNIT: True
@@ -155,7 +155,7 @@ STATS:
         BAR_OUTLINE: True
         BACKGROUND_IMAGE: background.png
     FREQUENCY:
-      INTERVAL: 5
+      INTERVAL: 1
       TEXT:
         SHOW: True
         SHOW_UNIT: True
@@ -166,7 +166,7 @@ STATS:
         FONT_COLOR: 255, 255, 255
         BACKGROUND_IMAGE: background.png
   MEMORY:
-    INTERVAL: 5
+    INTERVAL: 1
     VIRTUAL:
       PERCENT_TEXT:
         SHOW: True

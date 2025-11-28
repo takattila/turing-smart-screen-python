@@ -12,6 +12,7 @@ services:
     volumes:
       - $HOME/.Xauthority:/root/.Xauthority:ro,Z
       - ./config.yaml:/app/config.yaml:ro,Z
+      - ./res:/app/res:ro,Z
     devices:
       - /dev/ttyACM0
       - /dev/dri:/dev/dri

@@ -102,7 +102,7 @@ STATS:
         BAR_OUTLINE: True
         BACKGROUND_IMAGE: background.png
     TEMPERATURE:
-      INTERVAL: 5
+      INTERVAL: 1
       TEXT:
         SHOW: True
         SHOW_UNIT: False
@@ -124,7 +124,7 @@ STATS:
         BAR_OUTLINE: True
         BACKGROUND_IMAGE: background.png
   MEMORY:
-    INTERVAL: 5
+    INTERVAL: 1
     VIRTUAL:
       PERCENT_TEXT:
         SHOW: True

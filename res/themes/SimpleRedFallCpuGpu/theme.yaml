@@ -24,6 +24,22 @@ static_text:
   CPU_TEMP_TEXT:
     TEXT: "°C CPU"
     X: 170
+    Y: 125
+    FONT: generale-mono/GeneraleMonoA.ttf
+    FONT_SIZE: 38
+    FONT_COLOR: 204, 204, 204
+    BACKGROUND_IMAGE: background.png
+  GPU_PERCENT_TEXT:
+    TEXT: "%  GPU"
+    X: 170
+    Y: 245
+    FONT: generale-mono/GeneraleMonoA.ttf
+    FONT_SIZE: 38
+    FONT_COLOR: 204, 204, 204
+    BACKGROUND_IMAGE: background.png
+  GPU_TEMP_TEXT:
+    TEXT: "°C GPU"
+    X: 170
     Y: 362
     FONT: generale-mono/GeneraleMonoA.ttf
     FONT_SIZE: 38
@@ -35,44 +51,28 @@ static_text:
     Y: 51
     FONT: generale-mono/GeneraleMonoA.ttf
     FONT_SIZE: 12
-    FONT_COLOR: 255, 95, 0
+    FONT_COLOR: 255, 30, 0
     BACKGROUND_IMAGE: background.png
   CPU_MODEL_TEMP:
     TEXT: Intel i5-10400
     X: 170
-    Y: 406
-    FONT: generale-mono/GeneraleMonoA.ttf
-    FONT_SIZE: 12
-    FONT_COLOR: 255, 95, 0
-    BACKGROUND_IMAGE: background.png
-  RAM_TEXT:
-    TEXT: "%  RAM"
-    X: 170
-    Y: 125
-    FONT: generale-mono/GeneraleMonoA.ttf
-    FONT_SIZE: 38
-    FONT_COLOR: 204, 204, 204
-    BACKGROUND_IMAGE: background.png
-  RAM_MODEL:
-    TEXT: Kingston Fury DDR4
-    X: 170
     Y: 168
     FONT: generale-mono/GeneraleMonoA.ttf
     FONT_SIZE: 12
-    FONT_COLOR: 255, 95, 0
+    FONT_COLOR: 255, 67, 42
     BACKGROUND_IMAGE: background.png
-  GPU_TEXT:
-    TEXT: "%  GPU"
-    X: 170
-    Y: 245
-    FONT: generale-mono/GeneraleMonoA.ttf
-    FONT_SIZE: 38
-    FONT_COLOR: 204, 204, 204
-    BACKGROUND_IMAGE: background.png
-  GPU_MODEL:
+  GPU_MODEL_PERCENT:
     TEXT: NVIDIA RTX 3060
     X: 170
     Y: 287
+    FONT: generale-mono/GeneraleMonoA.ttf
+    FONT_SIZE: 12
+    FONT_COLOR: 255, 72, 0
+    BACKGROUND_IMAGE: background.png
+  GPU_MODEL_TEMP:
+    TEXT: NVIDIA RTX 3060
+    X: 170
+    Y: 406
     FONT: generale-mono/GeneraleMonoA.ttf
     FONT_SIZE: 12
     FONT_COLOR: 255, 95, 0
@@ -98,7 +98,7 @@ STATS:
         HEIGHT: 50
         MIN_VALUE: 0
         MAX_VALUE: 100
-        BAR_COLOR: 255, 95, 0
+        BAR_COLOR: 255, 30, 0
         BAR_OUTLINE: True
         BACKGROUND_IMAGE: background.png
     TEMPERATURE:
@@ -106,29 +106,8 @@ STATS:
       TEXT:
         SHOW: True
         SHOW_UNIT: False
-        X: 5
-        Y: 390
-        FONT: generale-mono/GeneraleMonoA.ttf
-        FONT_SIZE: 75
-        FONT_COLOR: 0, 0, 0
-        BACKGROUND_IMAGE: background.png
-      GRAPH:
-        SHOW: True
-        X: 170
-        Y: 420
-        WIDTH: 150
-        HEIGHT: 50
-        MIN_VALUE: 0
-        MAX_VALUE: 100
-        BAR_COLOR: 255, 95, 0
-        BAR_OUTLINE: True
-        BACKGROUND_IMAGE: background.png
-  MEMORY:
-    INTERVAL: 1
-    VIRTUAL:
-      PERCENT_TEXT:
-        SHOW: True
-        SHOW_UNIT: False
+        # X: 5
+        # Y: 390
         X: 5
         Y: 150
         FONT: generale-mono/GeneraleMonoA.ttf
@@ -137,13 +116,16 @@ STATS:
         BACKGROUND_IMAGE: background.png
       GRAPH:
         SHOW: True
+        # X: 170
+        # Y: 420
         X: 170
         Y: 182
         WIDTH: 150
         HEIGHT: 50
         MIN_VALUE: 0
         MAX_VALUE: 100
-        BAR_COLOR: 255, 95, 0
+        # BAR_COLOR: 255, 95, 0
+        BAR_COLOR: 255, 67, 42
         BAR_OUTLINE: True
         BACKGROUND_IMAGE: background.png
   GPU:
@@ -166,6 +148,58 @@ STATS:
         HEIGHT: 50
         MIN_VALUE: 0
         MAX_VALUE: 100
+        BAR_COLOR: 255, 72, 0
+        BAR_OUTLINE: True
+        BACKGROUND_IMAGE: background.png
+    TEMPERATURE:
+      INTERVAL: 1
+      TEXT:
+        SHOW: True
+        SHOW_UNIT: False
+        X: 5
+        Y: 390
+        FONT: generale-mono/GeneraleMonoA.ttf
+        FONT_SIZE: 75
+        FONT_COLOR: 0, 0, 0
+        BACKGROUND_IMAGE: background.png
+      GRAPH:
+        SHOW: True
+        X: 170
+        Y: 420
+        WIDTH: 150
+        HEIGHT: 50
+        MIN_VALUE: 0
+        MAX_VALUE: 100
+        # BAR_COLOR: 255, 67, 42
         BAR_COLOR: 255, 95, 0
         BAR_OUTLINE: True
         BACKGROUND_IMAGE: background.png
+
+
+
+
+      # TEXT:
+      #   SHOW: True
+      #   SHOW_UNIT: False
+      #   # X: 5
+      #   # Y: 390
+      #   X: 5
+      #   Y: 150
+      #   FONT: generale-mono/GeneraleMonoA.ttf
+      #   FONT_SIZE: 75
+      #   FONT_COLOR: 0, 0, 0
+      #   BACKGROUND_IMAGE: background.png
+      # GRAPH:
+      #   SHOW: True
+      #   # X: 170
+      #   # Y: 420
+      #   X: 170
+      #   Y: 182
+      #   WIDTH: 150
+      #   HEIGHT: 50
+      #   MIN_VALUE: 0
+      #   MAX_VALUE: 100
+      #   # BAR_COLOR: 255, 95, 0
+      #   BAR_COLOR: 255, 67, 42
+      #   BAR_OUTLINE: True
+      #   BACKGROUND_IMAGE: background.png
