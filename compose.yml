@@ -1,19 +1,18 @@
-version: "3.8"
-
 services:
   app:
     build:
       context: .
-    container_name: ${APP_NAME:-tsr}
-    tty: true
+    container_name: tsr
+    runtime: nvidia
     environment:
       - DISPLAY=${DISPLAY}
-    network_mode: host
-    volumes:
-      - $HOME/.Xauthority:/root/.Xauthority:ro,Z
-      - ./config.yaml:/app/config.yaml:ro,Z
-      - ./res:/app/res:ro,Z
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
     devices:
-      - /dev/ttyACM0
-      - /dev/dri:/dev/dri
+      - /dev/ttyACM0:/dev/ttyACM0
+    volumes:
+      - $HOME/.Xauthority:/root/.Xauthority:ro
+      - ./config.yaml:/app/config.yaml:ro
+      - ./res:/app/res:ro
     restart: unless-stopped
+
