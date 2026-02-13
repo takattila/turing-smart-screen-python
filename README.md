@@ -20,29 +20,53 @@ The instructions below ensure a fully reproducible setup.
 
 ### Software
 - CachyOS / Arch Linux
-- Docker
+- Docker + Docker Compose
 - NVIDIA driver (version 550+ recommended)
 - NVIDIA Container Toolkit
 
 ---
 
-## 🟦 1. Verify NVIDIA Driver
+## 🟦 1. Install and Enable Docker (CachyOS/Arch Linux)
 
-CachyOS includes the NVIDIA driver by default.
+Install Docker and Docker Compose:
 
-Check that it works:
+```bash
+sudo pacman -Sy docker docker-compose
+```
+
+Enable and start Docker:
+
+```bash
+sudo systemctl enable --now docker
+sudo systemctl start docker.socket
+sudo systemctl start docker
+```
+
+Add your user to the Docker group:
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+**Important:** Log out and back in so group membership takes effect.
+
+---
+
+## 🟦 2. Verify NVIDIA Driver
+
+Check that the NVIDIA driver is working:
 
 ```bash
 nvidia-smi
 ```
 
-If the GPU appears, you're good to continue.
+If the GPU appears, continue.
 
 ---
 
-## 🟦 2. Install NVIDIA Container Toolkit
+## 🟦 3. Install NVIDIA Container Toolkit
 
-On Arch Linux, **do NOT install `nvidia-docker`** — it does not exist here.
+Do **NOT** install `nvidia-docker` — it does not exist on Arch.
 
 Install the correct package:
 
@@ -73,7 +97,7 @@ If the GPU is visible, the setup is correct.
 
 ---
 
-## 🟦 3. Project Structure
+## 🟦 4. Project Structure
 
 Your project directory should contain:
 
@@ -88,7 +112,7 @@ requirements.txt
 
 ---
 
-## 🟦 4. Dockerfile (NVIDIA + Python + timezone fix)
+## 🟦 5. Dockerfile (NVIDIA + Python + timezone fix)
 
 ```dockerfile
 FROM nvidia/cuda:12.4.0-runtime-ubuntu22.04
@@ -126,7 +150,7 @@ CMD ["tsr"]
 
 ---
 
-## 🟦 5. docker-compose.yml (GPU + X11 + serial port)
+## 🟦 6. docker-compose.yml (GPU + X11 + serial port)
 
 ```yaml
 services:
@@ -150,7 +174,7 @@ services:
 
 ---
 
-## 🟦 6. Build and Run the Container
+## 🟦 7. Build and Run the Container
 
 ```bash
 docker compose build --no-cache
@@ -159,7 +183,7 @@ docker compose up -d
 
 ---
 
-## 🟦 7. Common Issues & Fixes
+## 🟦 8. Common Issues & Fixes
 
 ### ❌ NVIDIA driver not detected inside container
 ```
@@ -171,6 +195,8 @@ Fix:
 - Ensure `NVIDIA_VISIBLE_DEVICES=all`
 - Ensure `nvidia-container-toolkit` is installed
 - Restart Docker
+
+---
 
 ### ❌ Serial port not found
 ```
@@ -185,6 +211,8 @@ ls -l /dev/ttyACM*
 
 If it’s `/dev/ttyACM1`, update compose accordingly.
 
+---
+
 ### ❌ Docker build hangs on timezone selection
 
 Ensure these lines exist in the Dockerfile:
@@ -196,7 +224,7 @@ ENV TZ=Europe/Budapest
 
 ---
 
-## 🟦 8. Reading GPU Info from Python (NVML)
+## 🟦 9. Reading GPU Info from Python (NVML)
 
 ```python
 import pynvml
@@ -219,7 +247,7 @@ for i in range(count):
 For additional documentation, configuration details, and original project instructions, see the official repository:
 
 👉 **Turing Smart Screen Python (original GitHub repo)**  
-- [mathoudebine/turing-smart-screen-python](https://github.com/mathoudebine/turing-smart-screen-python)
+- https://github.com/mathoudebine/turing-smart-screen-python
 
 ---
 
