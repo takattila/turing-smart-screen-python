@@ -1,9 +1,7 @@
-# SPDX-License-Identifier: GPL-3.0-or-later
-#
 # turing-smart-screen-python - a Python system monitor and library for USB-C displays like Turing Smart Screen or XuanFang
 # https://github.com/mathoudebine/turing-smart-screen-python/
-#
-# Copyright (C) 2021 Matthieu Houdebine (mathoudebine)
+
+# Copyright (C) 2021-2023  Matthieu Houdebine (mathoudebine)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,12 +22,16 @@
 import math
 import platform
 import sys
+from .intel_gpu_top_reader import IntelGPUTopReader
 from collections import namedtuple
 from enum import IntEnum, auto
 from typing import Tuple
 
 # Nvidia GPU
-import GPUtil
+try:
+    import GPUtil
+except:
+    GPUtil = None
 # CPU & disk sensors
 import psutil
 
@@ -49,12 +51,14 @@ except:
     pyadl = None
 
 PNIC_BEFORE = {}
+INTEL_GPU_READER = None
 
 
 class GpuType(IntEnum):
     UNSUPPORTED = auto()
     AMD = auto()
     NVIDIA = auto()
+    INTEL = auto()
 
 
 DETECTED_GPU = GpuType.UNSUPPORTED
@@ -86,19 +90,10 @@ def sensors_fans():
     for base in basenames:
         try:
             current_rpm = int(bcat(base + '_input'))
-
             try:
                 max_rpm = int(bcat(base + '_max'))
             except:
-                max_rpm = False  # Real maximum speed not found
-            if not max_rpm:
-                if current_rpm > 2200:
-                    max_rpm = 3000  # AIO Pumps are usualy 3000 RPM
-                elif current_rpm > 1500:
-                    max_rpm = 2200  # High speed fans are usualy 2200 RPM
-                else:
-                    max_rpm = 1500  # Approximated: max fan speed is 1500 RPM
-
+                max_rpm = 1500  # Approximated: max fan speed is 1500 RPM
             try:
                 min_rpm = int(bcat(base + '_min'))
             except:
@@ -184,12 +179,24 @@ class Cpu(sensors.Cpu):
 
 class Gpu(sensors.Gpu):
     @staticmethod
-    def stats() -> Tuple[
-        float, float, float, float, float]:  # load (%) / used mem (%) / used mem (Mb) / total mem (Mb) / temp (°C)
+    def stats():
         if DETECTED_GPU == GpuType.AMD:
             return GpuAmd.stats()
+
         elif DETECTED_GPU == GpuType.NVIDIA:
             return GpuNvidia.stats()
+
+        elif DETECTED_GPU == GpuType.INTEL:
+            global INTEL_GPU_READER
+            if INTEL_GPU_READER:
+                info = INTEL_GPU_READER.get_info()
+                if info:
+                    load = info["usage"]
+                    temp = info["temperature"]
+                    # Intel iGPU has no VRAM data usually via intel_gpu_top
+                    return load, math.nan, math.nan, math.nan, temp
+            return math.nan, math.nan, math.nan, math.nan, math.nan
+
         else:
             return math.nan, math.nan, math.nan, math.nan, math.nan
 
@@ -217,34 +224,60 @@ class Gpu(sensors.Gpu):
             return GpuAmd.frequency()
         elif DETECTED_GPU == GpuType.NVIDIA:
             return GpuNvidia.frequency()
+        elif DETECTED_GPU == GpuType.INTEL:
+            global INTEL_GPU_READER
+            if INTEL_GPU_READER:
+                info = INTEL_GPU_READER.get_info()
+                if info:
+                    return info["clock"]
+            return math.nan
         else:
             return math.nan
 
     @staticmethod
     def is_available() -> bool:
-        global DETECTED_GPU
-        # Always use Nvidia GPU if available
+        global DETECTED_GPU, INTEL_GPU_READER
+
+        # Nvidia
         if GpuNvidia.is_available():
             logger.info("Detected Nvidia GPU(s)")
             DETECTED_GPU = GpuType.NVIDIA
-        # Otherwise, use the AMD GPU / APU if available
-        elif GpuAmd.is_available():
+            return True
+
+        # AMD
+        if GpuAmd.is_available():
             logger.info("Detected AMD GPU(s)")
             DETECTED_GPU = GpuType.AMD
-        else:
-            logger.warning("No supported GPU found")
-            DETECTED_GPU = GpuType.UNSUPPORTED
-            if sys.version_info >= (3, 11) and (platform.system() == "Linux" or platform.system() == "Darwin"):
-                logger.warning("If you have an AMD GPU, you may need to install some  libraries manually: see "
-                               "https://github.com/mathoudebine/turing-smart-screen-python/wiki/Troubleshooting#linux--macos-no-supported-gpu-found-with-an-amd-gpu-and-python-311")
+            return True
 
-        return DETECTED_GPU != GpuType.UNSUPPORTED
+        # Intel (intel_gpu_top)
+        try:
+            if INTEL_GPU_READER is None:
+                INTEL_GPU_READER = IntelGPUTopReader()
+            for i in range(5):
+                info = INTEL_GPU_READER.get_info()
+                if info and info["usage"] is not None:
+                    logger.info(f"Detected Intel GPU via intel_gpu_top (attempt {i+1})")
+                    DETECTED_GPU = GpuType.INTEL
+                    return True
+                time.sleep(1.0)
+        except Exception as e:
+            logger.debug(f"Intel GPU not detected: {e}")
+        except Exception as e:
+            logger.debug(f"Intel GPU not detected: {e}")
+
+        logger.warning("No supported GPU found")
+        DETECTED_GPU = GpuType.UNSUPPORTED
+        return False
 
 
 class GpuNvidia(sensors.Gpu):
     @staticmethod
     def stats() -> Tuple[
         float, float, float, float, float]:  # load (%) / used mem (%) / used mem (Mb) / total mem (Mb) / temp (°C)
+        if not GPUtil:
+            return math.nan, math.nan, math.nan, math.nan, math.nan
+            
         # Unlike other sensors, Nvidia GPU with GPUtil pulls in all the stats at once
         nvidia_gpus = GPUtil.getGPUs()
 
@@ -305,6 +338,8 @@ class GpuNvidia(sensors.Gpu):
 
     @staticmethod
     def is_available() -> bool:
+        if not GPUtil:
+            return False
         try:
             return len(GPUtil.getGPUs()) > 0
         except:
