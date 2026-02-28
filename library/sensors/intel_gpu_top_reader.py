@@ -17,7 +17,6 @@ class IntelGPUTopReader:
                 except:
                     pass
             
-            # A -l (list) mod sokkal megbizhatobb
             self.proc = subprocess.Popen(
                 ["sudo", "intel_gpu_top", "-l", "-s", "1000"],
                 stdout=subprocess.PIPE,
@@ -50,20 +49,14 @@ class IntelGPUTopReader:
             return None
 
         try:
-            # Beolvassuk a kovetkezo sort
-            for _ in range(10): # Par sort atugrunk ha kell (fejlec)
+            for _ in range(10):
                 line = self.proc.stdout.readline()
                 if not line:
                     return None
                 
                 parts = line.split()
-                # A kimenetben a szamok a fontosak. 
-                # Egy tipikus adatsor legalabb 9 oszlopbol all.
                 if len(parts) >= 9 and parts[0].isdigit():
                     try:
-                        # Indexek a korabbi vizsgalat alapjan:
-                        # 1: act frequency (MHz)
-                        # 8: RCS % (Render terheles)
                         gpu_clock = float(parts[1])
                         gpu_busy = float(parts[8])
                         gpu_temp = self._get_temp()
