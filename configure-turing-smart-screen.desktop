@@ -2,7 +2,7 @@
 Type=Application
 Name=Configure Turing Smart Screen Python
 Comment=Config szerkesztese es a Python folyamat ujrainditasa
-Exec=sh -c "vim {INSTALL_DIR}/config.yaml && docker exec -it tsr pkill python"
+Exec=sh -c "vim {INSTALL_DIR}/config.yaml && docker restart tsr"
 Terminal=true
 Icon={INSTALL_DIR}/res/icons/monitor-icon-17865/128.png
 
