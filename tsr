@@ -2,7 +2,7 @@
 
 case "$1" in
    "simple-program")
-     python3 /app/configure.py
+     python3 /app/simple-program.py
    ;;
    "configure")
      python3 /app/configure.py

@@ -1,9 +1,8 @@
 [Desktop Entry]
-# Save it to: ~/.local/share/applications/configure-turing-smart-screen.desktop
 Type=Application
 Name=Configure Turing Smart Screen Python
-Comment=Config szerkesztése és a Python folyamat újraindítása
-Exec=sh -c "vim /home/takattila/turing-smart-screen-python/config.yaml && docker exec -it tsr pkill python"
+Comment=Config szerkesztese es a Python folyamat ujrainditasa
+Exec=sh -c "vim {INSTALL_DIR}/config.yaml && docker exec -it tsr pkill python"
 Terminal=true
-Icon=/home/takattila/turing-smart-screen-python/res/icons/monitor-icon-17865/128.png
+Icon={INSTALL_DIR}/res/icons/monitor-icon-17865/128.png
 
